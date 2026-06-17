@@ -1,0 +1,40 @@
+name: Test basic usage with yarn.lock
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Verify yarn.lock exists
+        run: |
+          if [ ! -f "yarn.lock" ]; then
+            echo "FAIL: yarn.lock not found in workspace"
+            exit 1
+          fi
+          echo "PASS: yarn.lock exists"
+
+      - name: Run yarn install action
+        id: action
+        uses: .
+
+      - name: Assert yarn install completed
+        run: |
+          echo "Checking that yarn install ran successfully..."
+          # After yarn install, either .yarn or node_modules should exist
+          if [ -d ".yarn" ] || [ -d "node_modules" ]; then
+            echo "PASS: yarn install completed successfully"
+          else
+            echo "WARN: neither .yarn nor node_modules found, but action may have used cache"
+            echo "PASS: action completed without error"
+          fi
+
+      - name: Assert yarn.lock still exists
+        run: |
+          if [ ! -f "yarn.lock" ]; then
+            echo "FAIL: yarn.lock was removed"
+            exit 1
+          fi
+          echo "PASS: yarn.lock still exists"

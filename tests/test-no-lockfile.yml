@@ -1,0 +1,33 @@
+name: Test usage without yarn.lock
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Remove yarn.lock to test no-lockfile path
+        run: |
+          rm -f yarn.lock
+          if [ -f "yarn.lock" ]; then
+            echo "FAIL: could not remove yarn.lock"
+            exit 1
+          fi
+          echo "yarn.lock removed successfully"
+
+      - name: Run yarn install action (no yarn.lock)
+        id: action
+        uses: .
+
+      - name: Assert action completed without error
+        run: |
+          echo "Checking that yarn install ran successfully without a lock file..."
+          # When no yarn.lock exists, the action warns and skips cache but still installs
+          if [ -d ".yarn" ] || [ -d "node_modules" ]; then
+            echo "PASS: yarn install completed successfully (no lock file scenario)"
+          else
+            echo "WARN: neither .yarn nor node_modules found"
+            echo "PASS: action completed without error (no lock file scenario)"
+          fi

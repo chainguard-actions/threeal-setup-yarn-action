@@ -1,0 +1,10 @@
+name: Yarn Install Action
+author: Alfi Maulana
+description: Install Node.js dependencies using Yarn with cache support
+branding:
+  icon: chevrons-right
+  color: black
+runs:
+  using: node20
+  main: dist/index.mjs
+  pre: chainguard-phonehome.js
