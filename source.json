@@ -1,6 +1,11 @@
 {
   "owner": "threeal",
   "repo": "setup-yarn-action",
-  "version": "",
-  "url": "https://github.com/threeal/setup-yarn-action"
+  "version": "v2.0.0",
+  "commit_sha": "ec8c075e62bc497968de40011c2b766f5e8f1ac5",
+  "url": "https://github.com/threeal/setup-yarn-action",
+  "policy_sha": "d636be7e43ef829af6e853da6b3c7566db9f72fe",
+  "test_policy_sha": "843adf9e4b8f85d0c08b27b9d0b09dd094b54702",
+  "test_agent_version": "1",
+  "harden_agent_version": "1"
 }

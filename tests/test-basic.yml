@@ -1,0 +1,29 @@
+name: Test basic usage (default cache)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+      - name: Assert yarn is available
+        run: |
+          echo "Checking yarn is installed..."
+          if ! command -v yarn &> /dev/null; then
+            echo "FAIL: yarn command not found"
+            exit 1
+          fi
+          echo "yarn found at: $(which yarn)"
+          echo "PASS"
+      - name: Assert yarn version is Berry (>=2)
+        run: |
+          YARN_VERSION=$(yarn --version)
+          echo "yarn version: $YARN_VERSION"
+          MAJOR=$(echo "$YARN_VERSION" | cut -d. -f1)
+          if [ "$MAJOR" -lt 2 ]; then
+            echo "FAIL: expected Yarn Berry (>=2), got $YARN_VERSION"
+            exit 1
+          fi
+          echo "PASS"
