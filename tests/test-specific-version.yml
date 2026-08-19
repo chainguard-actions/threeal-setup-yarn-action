@@ -1,4 +1,4 @@
-name: Test with specific Yarn version
+name: Test specific Yarn version
 on:
   workflow_dispatch:
 jobs:
@@ -6,26 +6,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Setup Node.js
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version: "20"
       - id: action
         uses: .
         with:
-          version: "4.5.3"
-          cache: false
-      - name: Assert yarn is available
-        run: |
-          echo "Checking yarn is installed..."
-          if ! command -v yarn &> /dev/null; then
-            echo "FAIL: yarn command not found"
-            exit 1
-          fi
-          echo "yarn found at: $(which yarn)"
-          echo "PASS"
+          version: "4.1.0"
+          cache: "false"
       - name: Assert yarn version matches requested version
         run: |
           YARN_VERSION=$(yarn --version)
           echo "yarn version: $YARN_VERSION"
-          if [ "$YARN_VERSION" != "4.5.3" ]; then
-            echo "FAIL: expected yarn version 4.5.3, got $YARN_VERSION"
+          if [ "$YARN_VERSION" != "4.1.0" ]; then
+            echo "FAIL: expected yarn version 4.1.0, got $YARN_VERSION"
             exit 1
           fi
-          echo "PASS"
+          echo "PASS: yarn version is 4.1.0"

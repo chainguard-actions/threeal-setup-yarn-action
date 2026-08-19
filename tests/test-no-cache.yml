@@ -6,21 +6,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Setup Node.js
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version: "20"
       - id: action
         uses: .
         with:
-          cache: false
-      - name: Assert yarn is available
+          cache: "false"
+      - name: Assert yarn is available even without cache
         run: |
           echo "Checking yarn is installed..."
           if ! command -v yarn &> /dev/null; then
             echo "FAIL: yarn command not found"
             exit 1
           fi
-          echo "yarn found at: $(which yarn)"
-          echo "PASS"
-      - name: Assert yarn version is Berry (>=2)
-        run: |
           YARN_VERSION=$(yarn --version)
           echo "yarn version: $YARN_VERSION"
           MAJOR=$(echo "$YARN_VERSION" | cut -d. -f1)
@@ -28,4 +28,4 @@ jobs:
             echo "FAIL: expected Yarn Berry (>=2), got $YARN_VERSION"
             exit 1
           fi
-          echo "PASS"
+          echo "PASS: yarn is available with cache disabled, version $YARN_VERSION"

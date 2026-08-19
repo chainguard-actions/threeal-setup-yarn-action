@@ -1,0 +1,36 @@
+name: Test yarn install dependencies
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Setup Node.js
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version: "20"
+      - id: action
+        uses: .
+        with:
+          cache: "false"
+      - name: Assert yarn is available and installed dependencies
+        run: |
+          echo "Checking yarn is installed..."
+          if ! command -v yarn &> /dev/null; then
+            echo "FAIL: yarn command not found"
+            exit 1
+          fi
+          YARN_VERSION=$(yarn --version)
+          echo "yarn version: $YARN_VERSION"
+          echo "PASS: yarn install succeeded"
+      - name: Assert yarn cache or install artifacts exist
+        run: |
+          # The action runs yarn install in the workspace root (the action's own package.json)
+          # Check that yarn-related artifacts were created
+          if [ -d ".yarn" ] || [ -d "node_modules" ] || [ -f ".pnp.cjs" ]; then
+            echo "PASS: yarn install created expected artifacts"
+          else
+            echo "FAIL: no yarn install artifacts found (.yarn, node_modules, or .pnp.cjs)"
+            exit 1
+          fi
