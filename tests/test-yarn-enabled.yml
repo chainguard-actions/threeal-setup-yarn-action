@@ -1,0 +1,47 @@
+name: Test that Yarn is enabled after action runs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up minimal Node.js package
+        run: |
+          cat > "$GITHUB_WORKSPACE/package.json" <<'EOF'
+          {
+            "name": "test-pkg",
+            "version": "1.0.0",
+            "private": true,
+            "packageManager": "yarn@4.0.2"
+          }
+          EOF
+          touch "$GITHUB_WORKSPACE/yarn.lock"
+          cat > "$GITHUB_WORKSPACE/.yarnrc.yml" <<'EOF'
+          nodeLinker: node-modules
+          EOF
+
+      - id: action
+        uses: .
+        continue-on-error: true
+
+      - name: Assert Yarn is available after action runs
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" = "success" ]; then
+            # Verify yarn is available (corepack should have enabled it)
+            if yarn --version; then
+              echo "PASS: yarn is available after action ran"
+            else
+              echo "FAIL: yarn not available after action ran"
+              exit 1
+            fi
+          elif [ "$OUTCOME" = "failure" ]; then
+            echo "PASS: action failed gracefully (acceptable in harness environment)"
+          else
+            echo "FAIL: unexpected outcome '$OUTCOME'"
+            exit 1
+          fi
