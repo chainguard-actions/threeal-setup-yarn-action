@@ -6,10 +6,10 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 ## Versions
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v1.0.0 | [`v1.0.0`](https://github.com/chainguard-actions/threeal-setup-yarn-action/tree/v1.0.0) | [`862ec12`](https://github.com/threeal/setup-yarn-action/commit/862ec12b0121a37ad21e06a21bbe3b5ad259a829) |
-| v2.0.0 | [`v2.0.0`](https://github.com/chainguard-actions/threeal-setup-yarn-action/tree/v2.0.0) | [`ec8c075`](https://github.com/threeal/setup-yarn-action/commit/ec8c075e62bc497968de40011c2b766f5e8f1ac5) |
+| Version | Tag | Upstream commit | Hardening report |
+|---------|-----|-----------------|------------------|
+| v1.0.0 | [`v1.0.0`](https://github.com/chainguard-actions/threeal-setup-yarn-action/tree/v1.0.0) | [`862ec12`](https://github.com/threeal/setup-yarn-action/commit/862ec12b0121a37ad21e06a21bbe3b5ad259a829) | [`HARDENING.md`](https://github.com/chainguard-actions/threeal-setup-yarn-action/blob/v1.0.0/HARDENING.md) |
+| v2.0.0 | [`v2.0.0`](https://github.com/chainguard-actions/threeal-setup-yarn-action/tree/v2.0.0) | [`ec8c075`](https://github.com/threeal/setup-yarn-action/commit/ec8c075e62bc497968de40011c2b766f5e8f1ac5) | [`HARDENING.md`](https://github.com/chainguard-actions/threeal-setup-yarn-action/blob/v2.0.0/HARDENING.md) |
 
 ## Privacy
 
